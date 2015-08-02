@@ -113,7 +113,9 @@ namespace ModuleBot_2
 
                 xml.WriteStartElement("MBot");
 
+                xml.WriteStartElement("commands");
 
+                xml.WriteEndElement();//commands
 
                 xml.WriteEndElement(); //MBot
 
