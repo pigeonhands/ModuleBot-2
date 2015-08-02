@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DefaultPlugins", "DefaultPlugins", "{E7A5EE1A-873E-4139-87DA-6B869CE407AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleBot 2", "ModuleBot 2\ModuleBot 2.csproj", "{B7E8E80A-F510-4DCB-8059-C4F10BF2DDEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBotPlugin", "MBotPlugin\MBotPlugin.csproj", "{23E5501E-6A86-4EE4-94E5-484CF5DF9B15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleCommands", "DefaultPlugins\SimpleCommands\SimpleCommands.csproj", "{0B0A4C8A-9BC2-4708-ADB7-D450387AD127}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B7E8E80A-F510-4DCB-8059-C4F10BF2DDEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7E8E80A-F510-4DCB-8059-C4F10BF2DDEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7E8E80A-F510-4DCB-8059-C4F10BF2DDEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7E8E80A-F510-4DCB-8059-C4F10BF2DDEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23E5501E-6A86-4EE4-94E5-484CF5DF9B15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23E5501E-6A86-4EE4-94E5-484CF5DF9B15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23E5501E-6A86-4EE4-94E5-484CF5DF9B15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23E5501E-6A86-4EE4-94E5-484CF5DF9B15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B0A4C8A-9BC2-4708-ADB7-D450387AD127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B0A4C8A-9BC2-4708-ADB7-D450387AD127}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B0A4C8A-9BC2-4708-ADB7-D450387AD127}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B0A4C8A-9BC2-4708-ADB7-D450387AD127}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0B0A4C8A-9BC2-4708-ADB7-D450387AD127} = {E7A5EE1A-873E-4139-87DA-6B869CE407AC}
+	EndGlobalSection
+EndGlobal
