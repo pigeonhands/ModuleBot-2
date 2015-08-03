@@ -43,8 +43,8 @@
   <ItemGroup>
     <Compile Include="IBot.cs" />
     <Compile Include="IBotUI.cs" />
+    <Compile Include="IPermissions.cs" />
     <Compile Include="PluginCommand.cs" />
-    <Compile Include="PluginEvent.cs" />
     <Compile Include="PluginInfomation.cs" />
     <Compile Include="PluginInterface.cs" />
     <Compile Include="PluginTab.cs" />

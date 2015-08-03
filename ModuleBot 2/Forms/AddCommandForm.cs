@@ -23,6 +23,19 @@ namespace ModuleBot_2.Forms
             InitializeComponent();
         }
 
+        public AddCommandForm(CommandHandler[] _handlers, RegisteredCommand currentCommand)
+        {
+            InitializeComponent();
+            this.Text = "Editing Command";
+            handlers = _handlers;
+            FlagTextbox.Text = currentCommand.Flag;
+            modOnly.Checked = currentCommand.IsModOnly;
+            Isregex.Checked = currentCommand.FlagIsRegex;
+            CaseSensitive.Checked = currentCommand.FlagIsCaseSensitive;
+            LoadHandler(currentCommand.Handler);
+            
+        }
+
         private void addButton_Click(object sender, EventArgs e)
         {
             if (SelectedHandler == null)
@@ -53,14 +66,22 @@ namespace ModuleBot_2.Forms
             {
                 if(phf.ShowDialog() == DialogResult.OK)
                 {
-                    SelectedHandler = phf.SelectedHandler;
-                    if (SelectedHandler == null)
-                        return;
-                    Isregex.Checked = (SelectedHandler.Command.Paramiter == ParamiterType.None);
-                    Isregex.Enabled = (SelectedHandler.Command.Paramiter == ParamiterType.None);
-                    CommandName.Text = SelectedHandler.Command.Name;
+                    LoadHandler(phf.SelectedHandler);
                 }
             }
+        }
+
+        void LoadHandler(CommandHandler handler)
+        {
+            if (handler == null)
+                return;
+            SelectedHandler = handler;
+            if (SelectedHandler == null)
+                return;
+            if (SelectedHandler.Command.Paramiter != ParamiterType.None)
+                Isregex.Checked = false;
+            Isregex.Enabled = (SelectedHandler.Command.Paramiter == ParamiterType.None);
+            CommandName.Text = SelectedHandler.Command.Name;
         }
     }
 }

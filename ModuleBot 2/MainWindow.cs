@@ -15,14 +15,14 @@ using ModuleBot_2.Controls;
 using ModuleBot_2.Forms;
 using ModuleBot_2.Commands;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace ModuleBot_2
 {
     public partial class MainWindow : Form
     {
         List<LoadedPlugin> PluginList = new List<LoadedPlugin>();
-        List<CommandHandler> HandlerList = new List<CommandHandler>();
-        List<PluginEvent.RawChatEvent> RawchatEventList = new List<PluginEvent.RawChatEvent>();
+        Dictionary<string, CommandHandler> HandlerList = new Dictionary<string, CommandHandler>();
         HashSet<string> Moderators = new HashSet<string>();
 
         HashSet<string> PluginIDList = new HashSet<string>();
@@ -48,7 +48,7 @@ namespace ModuleBot_2
                 try
                 {
                     LoadedPlugin plugin = PluginHandler.LoadPlugin(pluginFile.FullName);
-
+                    plugin.OnException += Plugin_OnException;
                     if (!PluginIDList.Add(plugin.PluginID))
                         throw new Exception("Duplicate id");
 
@@ -61,20 +61,18 @@ namespace ModuleBot_2
                     handlers.UI = new BotUIHandler(plugin);
                     handlers.UI.OnTabAdd += UI_OnTabAdd;
 
-                    foreach(IPluginEvent pEvent in plugin.Details.EventList)
-                    {
-                        Type eventType = pEvent.GetType();
-                        if (eventType == typeof(PluginEvent.RawChatEvent))
-                            RawchatEventList.Add((PluginEvent.RawChatEvent)pEvent);
-                        if (eventType == typeof(PluginEvent.UseChatCommands))
-                            plugin.CanUseCommands = true;
-                    }
-
                     plugin.Initilze(handlers);
 
 
                     foreach (var command in plugin.Details.LoadedCommands)
-                        HandlerList.Add(new CommandHandler(plugin, command));
+                    {
+                        var handler = new CommandHandler(plugin, command);
+                        if (!HandlerList.ContainsKey(handler.ID))
+                        {
+                            HandlerList.Add(handler.ID, handler);
+                        }
+                    }
+                       
 
                     PluginDisplayControl display = new PluginDisplayControl(plugin);
                     display.Parent = PluginDisplayPanel;
@@ -89,12 +87,26 @@ namespace ModuleBot_2
                 {
                     Debug.WriteLine("Error on file {0}", pluginFile.Name);
                 }
+
+                LoadSettings();
             }
+        }
+
+        private void Plugin_OnException(LoadedPlugin parent, Exception ex)
+        {
+            string PluginName = "Unknowen";
+            if(parent != null)
+            {
+                PluginName = parent.Details.Name;
+            }
+            var exceptionItem = new ListViewItem(PluginName);
+            exceptionItem.SubItems.Add(ex.Message);
+            pluginExceptionList.Items.Add(exceptionItem);
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            bot = new IRCBot(new StreamDetails("BahNahNahBot", "oauth:ezb1az5khm015jx3gniq8kajxu07qr", "bahnahnah"));
+            
             bot.OnDisconnect += Bot_OnDisconnect;
             bot.OnMessageRecieve += Bot_OnMessageRecieve;
             if(!bot.Start())
@@ -107,21 +119,94 @@ namespace ModuleBot_2
 
         public void SaveSettings()
         {
-            using (XmlTextWriter xml = new XmlTextWriter("Modulebot.save", Encoding.UTF8))
+            try
             {
-                xml.WriteStartDocument();
 
-                xml.WriteStartElement("MBot");
+                using (XmlTextWriter xml = new XmlTextWriter("Modulebot.save", Encoding.UTF8))
+                {
+                    xml.Formatting = Formatting.Indented;
+                    xml.WriteStartDocument();
 
-                xml.WriteStartElement("commands");
+                    xml.WriteStartElement("MBot");
 
-                xml.WriteEndElement();//commands
+                    xml.WriteStartElement("commands");
 
-                xml.WriteEndElement(); //MBot
+                    foreach (ListViewItem lvItem in listView1.Items)
+                    {
+                        var command = (RegisteredCommand)lvItem.Tag;
+                        xml.WriteStartElement("Registered");
 
-                xml.WriteEndDocument();
+                        xml.WriteAttributeString("ID", command.Handler.ID);
+                        xml.WriteAttributeString("Flag", command.Flag);
+                        xml.WriteAttributeString("IsRegex", command.FlagIsRegex ? "1" : "0");
+                        xml.WriteAttributeString("ModOnly", command.IsModOnly ? "1" : "0");
+                        xml.WriteAttributeString("CaseSensistve", command.FlagIsCaseSensitive ? "1" : "0");
+
+                        xml.WriteEndElement();//Registered
+                    }
+                    xml.WriteEndElement();//commands
+
+                    xml.WriteStartElement("Mods");
+
+                    foreach (ListViewItem i in modList.Items)
+                    {
+                        xml.WriteStartElement("User");
+                        xml.WriteAttributeString("Name", (string)i.Tag);
+                        xml.WriteEndElement();//User
+                    }
+
+                    xml.WriteEndElement();//commands
+
+                    xml.WriteEndElement(); //MBot
+
+                    xml.WriteEndDocument();
+                }
+
+            }
+            catch
+            {
+                MessageBox.Show("Failed to save settings");
             }
         }
+
+        public void LoadSettings()
+        {
+            try
+            {
+                XDocument xDoc = XDocument.Load("Modulebot.save");
+                var main = xDoc.Element("MBot");
+                foreach(var commandElement in main.Descendants("commands").Descendants("Registered"))
+                {
+                    string ID = commandElement.Attribute("ID").Value;
+                    if(HandlerList.ContainsKey(ID))
+                    {
+                        var handler = HandlerList[ID];
+                        var Flag = commandElement.Attribute("Flag").Value;
+                        var Isregex = commandElement.Attribute("IsRegex").Value;
+                        var ModOnly = commandElement.Attribute("ModOnly").Value;
+                        var CaseSensitive = commandElement.Attribute("CaseSensistve").Value;
+
+                        var registeredCommand = new RegisteredCommand(Flag, handler);
+                        registeredCommand.FlagIsRegex = (Isregex == "1");
+                        registeredCommand.IsModOnly = (ModOnly == "1");
+                        registeredCommand.FlagIsCaseSensitive = (CaseSensitive == "1");
+
+                        AddCommandToList(registeredCommand);
+                    }
+                }
+
+                foreach (var commandElement in main.Descendants("Mods").Descendants("User"))
+                {
+                    ListViewItem mod = new ListViewItem(commandElement.Attribute("Name").Value);
+                    modList.Items.Add(mod);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Failed to load settings");
+            }
+        }
+
 
         #endregion
 
@@ -144,6 +229,8 @@ namespace ModuleBot_2
             foreach(ListViewItem i in listView1.Items)
             {
                 RegisteredCommand command = (RegisteredCommand)i.Tag;
+                if (command == null)
+                    continue;
                 if (command.IsModOnly && !Moderators.Contains(message.Sender.ToLower()))
                     continue;
                 if (command.Handler.Command.Paramiter == ParamiterType.Must && !hasParamiter)
@@ -151,9 +238,12 @@ namespace ModuleBot_2
                 if (command.CheckFlag(message))
                     command.Execute(message.Sender, Paramiters);
             }
-            foreach(var chatEvent in RawchatEventList)
-                chatEvent.Execute(message.Sender, message.Text);
 
+            foreach(var plugin in PluginList)
+            {
+                if (plugin.Permissions.CanAccessRawChat)
+                    plugin.Permissions.Handlers.RawChat.Execute(plugin, message.Sender, message.Text);
+            }
         }
 
         private void Bot_OnDisconnect(IRCBot sender)
@@ -192,9 +282,11 @@ namespace ModuleBot_2
                     throw new Exception("No permission for commands");
                 bot.SendMessage(string.Format(message, data));
             }
-            catch
+            catch(Exception ex)
             {
-
+                OnExceptionDelegate oEx = parent.GetExceptionCallback();
+                if (oEx != null)
+                    oEx(parent, ex);
             }
             
         }
@@ -209,31 +301,37 @@ namespace ModuleBot_2
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (AddCommandForm acf = new AddCommandForm(HandlerList.ToArray()))
+            using (AddCommandForm acf = new AddCommandForm(HandlerList.Values.ToArray()))
             {
                 if(acf.ShowDialog() == DialogResult.OK)
                 {
                     RegisteredCommand command = acf.NewCommand;
-                    ListViewItem i = new ListViewItem(command.Flag);
-                    i.SubItems.Add(command.Handler.Command.Name);
-                    List<string> PropertyValues = new List<string>();
-
-                    if (command.IsModOnly)
-                        PropertyValues.Add("Mod Only");
-                    if (command.FlagIsRegex)
-                        PropertyValues.Add("Regex");
-                    if (command.FlagIsCaseSensitive)
-                        PropertyValues.Add("Case sensitive");
-
-                    string properties = string.Join(", ", PropertyValues.ToArray());
-                    if (string.IsNullOrEmpty(properties))
-                        properties = "None";
-                    i.SubItems.Add(properties);
-
-                    i.Tag = command;
-                    listView1.Items.Add(i);
+                    AddCommandToList(command);
                 }
             }
+        }
+
+        void AddCommandToList(RegisteredCommand command)
+        {
+            ListViewItem i = new ListViewItem(command.Flag);
+            i.SubItems.Add(command.Handler.Command.Name);
+            List<string> PropertyValues = new List<string>();
+
+            if (command.IsModOnly)
+                PropertyValues.Add("Mod Only");
+            if (command.FlagIsRegex)
+                PropertyValues.Add("Regex");
+            if (command.FlagIsCaseSensitive)
+                PropertyValues.Add("Case sensitive");
+
+            string properties = string.Join(", ", PropertyValues.ToArray());
+            if (string.IsNullOrEmpty(properties))
+                properties = "None";
+            i.SubItems.Add(properties);
+
+            i.Tag = command;
+            listView1.Items.Add(i);
+            SaveSettings();
         }
 
         private void addNewModToolStripMenuItem_Click(object sender, EventArgs e)
@@ -247,6 +345,7 @@ namespace ModuleBot_2
                     ListViewItem i = new ListViewItem(amf.Username);
                     i.Tag = amf.Username;
                     modList.Items.Add(i);
+                    SaveSettings();
                 }
             }
         }
@@ -261,6 +360,7 @@ namespace ModuleBot_2
                 modList.Items.Remove(i);
                 Moderators.Remove(username.ToLower());
             }
+            SaveSettings();
         }
 
         private void allToolStripMenuItem_Click(object sender, EventArgs e)
@@ -273,6 +373,7 @@ namespace ModuleBot_2
                 modList.Items.Remove(i);
                 Moderators.Remove(username.ToLower());
             }
+            SaveSettings();
         }
 
         private void removeCommandToolStripMenuItem_Click(object sender, EventArgs e)
@@ -280,6 +381,38 @@ namespace ModuleBot_2
             if (listView1.SelectedItems.Count < 1)
                 return;
             listView1.Items.Remove(listView1.SelectedItems[0]);
+            SaveSettings();
+        }
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listView1.SelectedItems.Count < 1)
+                return;
+            var item = listView1.SelectedItems[0];
+            var command = (RegisteredCommand)item.Tag;
+            using (AddCommandForm acf = new AddCommandForm(HandlerList.Values.ToArray(), command))
+            {
+                if(acf.ShowDialog() == DialogResult.OK)
+                {
+                    command = acf.NewCommand;
+                    item.SubItems[1].Text = command.Handler.Command.Name;
+                    List<string> PropertyValues = new List<string>();
+
+                    if (command.IsModOnly)
+                        PropertyValues.Add("Mod Only");
+                    if (command.FlagIsRegex)
+                        PropertyValues.Add("Regex");
+                    if (command.FlagIsCaseSensitive)
+                        PropertyValues.Add("Case sensitive");
+
+                    string properties = string.Join(", ", PropertyValues.ToArray());
+                    if (string.IsNullOrEmpty(properties))
+                        properties = "None";
+                    item.SubItems[2].Text = properties;
+                    item.Tag = command;
+                    SaveSettings();
+                }
+            }
         }
     }
 }

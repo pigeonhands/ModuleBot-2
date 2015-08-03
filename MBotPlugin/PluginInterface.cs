@@ -8,7 +8,7 @@ namespace MBotPlugin
 {
     public interface IPlugin
     {
-        void PluginLoad(IBot BotHandler, IBotUI UIHandler);
+        void PluginLoad(IBot BotHandler, IBotUI UIHandler, IPermissions PermissionsHandler);
         PluginInfomation PluginDetails { get; }
     }
 }

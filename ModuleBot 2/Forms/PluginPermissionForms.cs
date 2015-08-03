@@ -1,11 +1,13 @@
 ﻿using MBotPlugin;
 using ModuleBot_2.Plugin;
+using ModuleBot_2.Plugin.Permissions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,19 +16,28 @@ namespace ModuleBot_2.Forms
 {
     public partial class PluginPermissionForms : Form
     {
-        PluginInfomation Details;
-        public PluginPermissionForms(PluginInfomation _details)
+        PermissionsHandler Permissions;
+        public PluginPermissionForms(PermissionsHandler _permissions)
         {
-            Details = _details;
+            if (_permissions == null)
+            {
+                this.DialogResult = DialogResult.Abort;
+                return;
+            }
+            Permissions = _permissions;
             InitializeComponent();
-            this.Text = string.Format("Permissions for \"{0}\"", Details.Name);
+            this.Text = string.Format("Permissions for \"{0}\"", Permissions.Parent.Details.Name);
         }
 
         private void PluginPermissionForms_Load(object sender, EventArgs e)
         {
-            foreach(IPluginEvent ev in Details.EventList)
+            foreach(PropertyInfo property in typeof(PermissionsHandler).GetProperties())
             {
-                permissionsList.Items.Add(ev.Description);
+                PermissionAttribute pAtt = property.GetCustomAttribute(typeof(PermissionAttribute)) as PermissionAttribute;
+                if (pAtt == null)
+                    continue;
+                if((bool)property.GetValue(Permissions))
+                    permissionsList.Items.Add(pAtt.Description);
             }
         }
     }

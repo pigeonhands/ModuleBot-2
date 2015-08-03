@@ -21,14 +21,16 @@ namespace MBotPlugin
 
         public void Execute(string sender, string[] paramiters)
         {
-            try
-            {
-                OnExecute(sender, paramiters);
-            }
-            catch
-            {
+            OnExecute(sender, paramiters);
+        }
 
-            }
+        public static PluginCommand Create(string name, string descrption, CommandCallback cb, ParamiterType paramiters)
+        {
+            PluginCommand pt = new PluginCommand(name);
+            pt.Description = descrption;
+            pt.OnExecute += cb;
+            pt.Paramiter = paramiters;
+            return pt;
         }
     }
     

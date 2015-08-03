@@ -31,8 +31,8 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listView1
@@ -62,17 +62,17 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "Description";
-            this.columnHeader2.Width = 235;
+            this.columnHeader2.Width = 196;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Paramiter";
+            this.columnHeader3.Width = 88;
             // 
             // columnHeader4
             // 
             this.columnHeader4.Text = "Plugin";
             this.columnHeader4.Width = 130;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Paramiter";
-            this.columnHeader3.Width = 75;
             // 
             // PluginHandlerListForm
             // 

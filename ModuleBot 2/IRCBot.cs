@@ -62,7 +62,7 @@ namespace ModuleBot_2
         {
             while (Streams.OutputStream != null && Streams.BaseStream != null && HeartbeatInterval > 0)
             {
-                SendRaw("HEARTBEAT");
+                SendRaw("-HEARTBEAT");
                 await Task.Delay(HeartbeatInterval);
             }
         }
@@ -82,6 +82,8 @@ namespace ModuleBot_2
                 if (messageSegments.Length != 4)
                     continue;
                 MBotMessage _m = new MBotMessage(messageSegments[0].Split('!')[0].Replace(":", ""), messageSegments[3].Substring(1, messageSegments[3].Length - 1), line);
+                if (_m.Sender == "tmi.twitch.tv" && _m.Text == "HEARTBEAT :Unknown command")
+                    continue;
                 if (OnMessageRecieve != null)
                     OnMessageRecieve(this, _m);
             }

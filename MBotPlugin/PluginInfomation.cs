@@ -12,12 +12,8 @@ namespace MBotPlugin
         {
             get { return _LoadedCommands.ToArray(); }
         }
-        public IPluginEvent[] EventList
-        {
-            get { return _EventList.ToArray(); }
-        }
         private List<PluginCommand> _LoadedCommands = new List<PluginCommand>();
-        private List<IPluginEvent> _EventList = new List<IPluginEvent>();
+        private HashSet<string> PluginNames = new HashSet<string>();
         public PluginInfomation(string _name)
         {
             Name = _name;
@@ -26,22 +22,16 @@ namespace MBotPlugin
         }
         public void AddCommand(PluginCommand command)
         {
-            _LoadedCommands.Add(command);
+            if(PluginNames.Add(command.Name))
+            {
+                _LoadedCommands.Add(command);
+            }
         }
 
         public void AddCommands(params PluginCommand[] commands)
         {
             foreach (var c in commands)
                 AddCommand(c);
-        }
-        public void AddEvent(IPluginEvent pluginevent)
-        {
-            foreach(IPluginEvent e in EventList)
-            {
-                if (e.GetType() == pluginevent.GetType())
-                    return;
-            }
-            _EventList.Add(pluginevent);
         }
         public string Name { get; private set; }
         public string Description { get; set; }

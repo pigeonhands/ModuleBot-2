@@ -35,6 +35,9 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.commandContext = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.removeCommandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.PluginDisplayPanel = new System.Windows.Forms.Panel();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -45,15 +48,21 @@
             this.deleteSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.commandContext = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.removeCommandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.pluginExceptionList = new System.Windows.Forms.ListView();
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.mainTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.commandContext.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.modContext.SuspendLayout();
-            this.commandContext.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainTabControl
@@ -111,6 +120,7 @@
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDoubleClick);
             // 
             // columnHeader1
             // 
@@ -122,9 +132,28 @@
             this.columnHeader2.Text = "Command";
             this.columnHeader2.Width = 100;
             // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Properties";
+            this.columnHeader4.Width = 112;
+            // 
+            // commandContext
+            // 
+            this.commandContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removeCommandToolStripMenuItem});
+            this.commandContext.Name = "commandContext";
+            this.commandContext.Size = new System.Drawing.Size(178, 26);
+            // 
+            // removeCommandToolStripMenuItem
+            // 
+            this.removeCommandToolStripMenuItem.Name = "removeCommandToolStripMenuItem";
+            this.removeCommandToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.removeCommandToolStripMenuItem.Text = "Remove Command";
+            this.removeCommandToolStripMenuItem.Click += new System.EventHandler(this.removeCommandToolStripMenuItem_Click);
+            // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.PluginDisplayPanel);
+            this.tabPage2.Controls.Add(this.tabControl1);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -138,7 +167,7 @@
             this.PluginDisplayPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PluginDisplayPanel.Location = new System.Drawing.Point(3, 3);
             this.PluginDisplayPanel.Name = "PluginDisplayPanel";
-            this.PluginDisplayPanel.Size = new System.Drawing.Size(487, 276);
+            this.PluginDisplayPanel.Size = new System.Drawing.Size(473, 244);
             this.PluginDisplayPanel.TabIndex = 0;
             // 
             // tabPage3
@@ -198,35 +227,75 @@
             // selectedToolStripMenuItem
             // 
             this.selectedToolStripMenuItem.Name = "selectedToolStripMenuItem";
-            this.selectedToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.selectedToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.selectedToolStripMenuItem.Text = "Selected";
             this.selectedToolStripMenuItem.Click += new System.EventHandler(this.selectedToolStripMenuItem_Click);
             // 
             // allToolStripMenuItem
             // 
             this.allToolStripMenuItem.Name = "allToolStripMenuItem";
-            this.allToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.allToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.allToolStripMenuItem.Text = "All";
             this.allToolStripMenuItem.Click += new System.EventHandler(this.allToolStripMenuItem_Click);
             // 
-            // commandContext
+            // tabControl1
             // 
-            this.commandContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.removeCommandToolStripMenuItem});
-            this.commandContext.Name = "commandContext";
-            this.commandContext.Size = new System.Drawing.Size(178, 26);
+            this.tabControl1.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(3, 3);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(487, 276);
+            this.tabControl1.TabIndex = 1;
             // 
-            // removeCommandToolStripMenuItem
+            // tabPage4
             // 
-            this.removeCommandToolStripMenuItem.Name = "removeCommandToolStripMenuItem";
-            this.removeCommandToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.removeCommandToolStripMenuItem.Text = "Remove Command";
-            this.removeCommandToolStripMenuItem.Click += new System.EventHandler(this.removeCommandToolStripMenuItem_Click);
+            this.tabPage4.Controls.Add(this.PluginDisplayPanel);
+            this.tabPage4.Location = new System.Drawing.Point(4, 4);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(479, 250);
+            this.tabPage4.TabIndex = 0;
+            this.tabPage4.Text = "Loaded Plugins";
+            this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // columnHeader4
+            // tabPage5
             // 
-            this.columnHeader4.Text = "Properties";
-            this.columnHeader4.Width = 112;
+            this.tabPage5.Controls.Add(this.pluginExceptionList);
+            this.tabPage5.Location = new System.Drawing.Point(4, 4);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(479, 250);
+            this.tabPage5.TabIndex = 1;
+            this.tabPage5.Text = "Exception Logs";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // pluginExceptionList
+            // 
+            this.pluginExceptionList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader5,
+            this.columnHeader6});
+            this.pluginExceptionList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pluginExceptionList.FullRowSelect = true;
+            this.pluginExceptionList.GridLines = true;
+            this.pluginExceptionList.Location = new System.Drawing.Point(3, 3);
+            this.pluginExceptionList.Name = "pluginExceptionList";
+            this.pluginExceptionList.Size = new System.Drawing.Size(473, 244);
+            this.pluginExceptionList.TabIndex = 0;
+            this.pluginExceptionList.UseCompatibleStateImageBehavior = false;
+            this.pluginExceptionList.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Plugin";
+            this.columnHeader5.Width = 136;
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Exception";
+            this.columnHeader6.Width = 320;
             // 
             // MainWindow
             // 
@@ -239,10 +308,13 @@
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.mainTabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.commandContext.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.modContext.ResumeLayout(false);
-            this.commandContext.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -268,5 +340,11 @@
         private System.Windows.Forms.ContextMenuStrip commandContext;
         private System.Windows.Forms.ToolStripMenuItem removeCommandToolStripMenuItem;
         private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.ListView pluginExceptionList;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
     }
 }

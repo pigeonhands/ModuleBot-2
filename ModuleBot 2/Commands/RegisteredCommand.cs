@@ -1,4 +1,5 @@
 ﻿using MBotPlugin;
+using ModuleBot_2.Plugin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,11 @@ namespace ModuleBot_2.Commands
         public bool FlagIsCaseSensitive { get; set; }
         public bool IsModOnly { get; set; }
         public CommandHandler Handler { get; set; }
+        public OnExceptionDelegate OnException { get; set; }
 
         public RegisteredCommand(string _flag, CommandHandler h)
         {
+            OnException = h.Parent.GetExceptionCallback();
             Flag = _flag;
             Handler = h;
             FlagIsRegex = false;
@@ -28,7 +31,15 @@ namespace ModuleBot_2.Commands
         {
             if (!Handler.Parent.Enabled)
                 return;
-            Handler.Command.Execute(sender, paramiters);
+            try
+            {
+                Handler.Command.Execute(sender, paramiters);
+            }
+            catch(Exception ex)
+            {
+                if (OnException != null)
+                    OnException(Handler.Parent, ex);
+            }
         }
         public bool CheckFlag(MBotMessage m)
         {
@@ -41,7 +52,7 @@ namespace ModuleBot_2.Commands
                 bool ParamiterExists = cmp.Contains(" ");
                 string paramBase = ParamiterExists ? cmp.Split(' ')[0] : cmp;
 
-                if (FlagIsRegex)
+                if (FlagIsRegex && Handler.Command.Paramiter == ParamiterType.None)
                 {
                     return Regex.Match(cmp, Flag).Success;
                 }
@@ -61,8 +72,10 @@ namespace ModuleBot_2.Commands
                 }
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
+                if (OnException != null)
+                    OnException(Handler.Parent, ex);
                 return false;
             }
         }

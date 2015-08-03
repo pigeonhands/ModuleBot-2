@@ -21,30 +21,11 @@ namespace SimpleCommands
                 info.Description = "Simple commands for ModuleBot";
                 info.Publisher = "BahNahNah";
 
-                PluginCommand echoCommand = new PluginCommand("Echo");
-                echoCommand.Description = "Echo what the user types (Filters commands)";
-                echoCommand.Paramiter = ParamiterType.Must;
-                echoCommand.OnExecute += EchoCommand_OnExecute;
-
-                PluginCommand clearChatCommand = new PluginCommand("Clear chat");
-                clearChatCommand.Description = "Clears the chat";
-                clearChatCommand.OnExecute += ClearChatCommand_OnExecute;
-
-                PluginCommand banCommand = new PluginCommand("Ban");
-                banCommand.Description = "Ban a user";
-                banCommand.Paramiter = ParamiterType.Must;
-                banCommand.OnExecute += BanCommand_OnExecute; ;
-
-                info.AddCommands(echoCommand, clearChatCommand, banCommand);
-
-
-                PluginEvent.RawChatEvent chatEvent = new PluginEvent.RawChatEvent();
-                chatEvent.OnMessage += (sender, message) =>
-                {
-                    chatLog.NewMessage(sender, message);
-                };
-                info.AddEvent(chatEvent);
-                info.AddEvent(new PluginEvent.UseChatCommands());
+                info.AddCommands(
+                     PluginCommand.Create("Clear chat", "Clears the chat", ClearChatCommand_OnExecute, ParamiterType.None),
+                     PluginCommand.Create("Ban", "Ban a user", BanCommand_OnExecute, ParamiterType.Must),
+                     PluginCommand.Create("Echo", "Echo what the user types (Filters commands)", EchoCommand_OnExecute, ParamiterType.Must)
+                     );
 
                 return info;
             }
@@ -72,10 +53,19 @@ namespace SimpleCommands
             Bot.SayMessage(string.Join(" ", paramiters));
         }
 
-        public void PluginLoad(IBot BotHandler, IBotUI UIHandler)
+        public void PluginLoad(IBot BotHandler, IBotUI UIHandler, IPermissions PermissionsHandler)
         {
             Bot = BotHandler;
+
+            Event.IRawChatHandler rawChatHandler = PermissionsHandler.AccessRawChat();
+            rawChatHandler.OnChat += RawChatHandler_OnChat;
+
             UIHandler.AddTab(new PluginTab("Raw chat", chatLog));
+        }
+
+        private void RawChatHandler_OnChat(string sender, string message)
+        {
+            chatLog.NewMessage(sender, message);
         }
     }
 }

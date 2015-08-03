@@ -31,20 +31,16 @@ namespace ModuleBot_2.Controls
 
         private void PluginDisplayControl_Load(object sender, EventArgs e)
         {
-            permissionsButton.Text = string.Format("Permissions ({0})", Details.EventList.Length);
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(Details.EventList.Length < 1)
-            {
-                MessageBox.Show("No events for this plugin");
-                return;
-            }
-            using (PluginPermissionForms p = new PluginPermissionForms(Details))
+            using (PluginPermissionForms p = new PluginPermissionForms(Plugin.Permissions))
             {
                 p.ShowDialog();
             }
+            
         }
     }
 }

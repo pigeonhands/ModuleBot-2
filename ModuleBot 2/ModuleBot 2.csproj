@@ -91,6 +91,8 @@
     <Compile Include="Plugin\BotHandler.cs" />
     <Compile Include="Plugin\BotUIHandler.cs" />
     <Compile Include="Plugin\LoadedPlugin.cs" />
+    <Compile Include="Plugin\Permissions\Handlers\RawChatHandler.cs" />
+    <Compile Include="Plugin\Permissions\PermissionsHandler.cs" />
     <Compile Include="Plugin\PluginHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -12,11 +12,13 @@ namespace ModuleBot_2.Commands
     {
         public LoadedPlugin Parent { get; private set; }
         public PluginCommand Command { get; private set; }
+        public string ID { get; private set; }
 
         public CommandHandler(LoadedPlugin plugin, PluginCommand _command)
         {
             Parent = plugin;
             Command = _command;
+            ID = string.Format("{0}->[{1}]", plugin.PluginID, _command.Name);
         }
     }
 }
