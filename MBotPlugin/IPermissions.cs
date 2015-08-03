@@ -6,25 +6,25 @@ using System.Threading.Tasks;
 
 namespace MBotPlugin
 {
-    public delegate void OnRawChat(string sender, string message);
+    public delegate void OnChatTrigger(string sender);
     public interface IPermissions
     {
         /// <summary>
         /// Allows direct access to twitch chat
         /// </summary>
         /// <returns></returns>
-        Event.IRawChatHandler AccessRawChat();
+        Event.IChatTrigger UseChatTriggering();
         /// <summary>
         /// Allows use of twitch commands
         /// </summary>
-        void AccessCommands();
+        void UseCommands();
     }
 
     public static class Event
     {
-        public interface IRawChatHandler
+        public interface IChatTrigger
         {
-            event OnRawChat OnChat;
+            void AddTrigger(string trigger, OnChatTrigger callback);
         }
     }
 }

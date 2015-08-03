@@ -57,6 +57,24 @@
     <Compile Include="Controls\PluginDisplayControl.Designer.cs">
       <DependentUpon>PluginDisplayControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\UserInputControls\UserInput_Integer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserInputControls\UserInput_Integer.Designer.cs">
+      <DependentUpon>UserInput_Integer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserInputControls\UserInput_String.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserInputControls\UserInput_String.Designer.cs">
+      <DependentUpon>UserInput_String.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserInputControls\UserInput_UnasignedInteger.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserInputControls\UserInput_UnasignedInteger.Designer.cs">
+      <DependentUpon>UserInput_UnasignedInteger.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\AddCommandForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,10 +118,21 @@
     <Compile Include="Plugin\Permissions\Handlers\RawChatHandler.cs" />
     <Compile Include="Plugin\Permissions\PermissionsHandler.cs" />
     <Compile Include="Plugin\PluginHandler.cs" />
+    <Compile Include="Plugin\UserData.cs" />
+    <Compile Include="Plugin\UserInputTagData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\PluginDisplayControl.resx">
       <DependentUpon>PluginDisplayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserInputControls\UserInput_Integer.resx">
+      <DependentUpon>UserInput_Integer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserInputControls\UserInput_String.resx">
+      <DependentUpon>UserInput_String.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserInputControls\UserInput_UnasignedInteger.resx">
+      <DependentUpon>UserInput_UnasignedInteger.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AddCommandForm.resx">
       <DependentUpon>AddCommandForm.cs</DependentUpon>

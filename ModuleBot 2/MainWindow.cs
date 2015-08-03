@@ -16,6 +16,7 @@ using ModuleBot_2.Forms;
 using ModuleBot_2.Commands;
 using System.Xml;
 using System.Xml.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ModuleBot_2
 {
@@ -150,6 +151,18 @@ namespace ModuleBot_2
                         xml.WriteAttributeString("ModOnly", command.IsModOnly ? "1" : "0");
                         xml.WriteAttributeString("CaseSensistve", command.FlagIsCaseSensitive ? "1" : "0");
 
+                        xml.WriteStartElement("UserData");
+
+                        foreach(var ud in command.UserDataInput.ObjectData)
+                        {
+                            xml.WriteStartElement("object");
+                            xml.WriteAttributeString("Name", ud.Key);
+                            xml.WriteAttributeString("Value", SerilizeObject(ud.Value));
+                            xml.WriteEndElement();//data
+                        }
+
+                        xml.WriteEndElement();//UserData
+
                         xml.WriteEndElement();//Registered
                     }
                     xml.WriteEndElement();//commands
@@ -195,6 +208,21 @@ namespace ModuleBot_2
                         var CaseSensitive = commandElement.Attribute("CaseSensistve").Value;
 
                         var registeredCommand = new RegisteredCommand(Flag, handler);
+
+                        var data = new Dictionary<string, object>();
+
+                        foreach(var UserDataElement in commandElement.Descendants("UserData").Descendants("object"))
+                        {
+                            string name = UserDataElement.Attribute("Name").Value;
+                            if (data.ContainsKey(name))
+                                continue;
+                            object o = DeserilizeObject(UserDataElement.Attribute("Value").Value);
+                            if (o == null)
+                                continue;
+                            data.Add(name, o);
+                        }
+                        registeredCommand.UserDataInput = new UserData(data);
+
                         registeredCommand.FlagIsRegex = (Isregex == "1");
                         registeredCommand.IsModOnly = (ModOnly == "1");
                         registeredCommand.FlagIsCaseSensitive = (CaseSensitive == "1");
@@ -215,6 +243,38 @@ namespace ModuleBot_2
             }
         }
 
+        private string SerilizeObject(object o)
+        {
+            try
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    bf.Serialize(ms, o);
+                    return Convert.ToBase64String(ms.ToArray());
+                }
+            }
+            catch
+            {
+                return "";
+            }
+        }
+        private object DeserilizeObject(string o)
+        {
+            try
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(o)))
+                {
+                    return bf.Deserialize(ms);
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
 
         #endregion
 
@@ -224,11 +284,11 @@ namespace ModuleBot_2
         {
             bool hasParamiter = message.Text.Contains(" ");
             string uCmd = string.Empty;
-            string[] Paramiters = new string[] {  };
+            string[] Parameters = new string[] {  };
             if (hasParamiter)
             {
                 uCmd = message.Text.Split(' ')[0];
-                Paramiters = message.Text.Split(new char[] {' '}, 2)[1].Split(' ');
+                Parameters = message.Text.Split(new char[] {' '}, 2)[1].Split(' ');
             }
             else
             {
@@ -244,13 +304,13 @@ namespace ModuleBot_2
                 if (command.Handler.Command.Paramiter == ParamiterType.Must && !hasParamiter)
                     continue;
                 if (command.CheckFlag(message))
-                    command.Execute(message.Sender, Paramiters);
+                    command.Execute(message.Sender, Parameters);
             }
 
             foreach(var plugin in PluginList)
             {
-                if (plugin.Permissions.CanAccessRawChat)
-                    plugin.Permissions.Handlers.RawChat.Execute(plugin, message.Sender, message.Text);
+                if (plugin.Permissions.CanUseChatTrigger)
+                    plugin.Permissions.Handlers.ChatTrigger.CheckTrigger(plugin, message.Sender, message.Text);
             }
         }
 

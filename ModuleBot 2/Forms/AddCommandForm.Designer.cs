@@ -37,11 +37,14 @@
             this.label3 = new System.Windows.Forms.Label();
             this.CommandName = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.UserInputPanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // addButton
             // 
-            this.addButton.Location = new System.Drawing.Point(6, 85);
+            this.addButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.addButton.Location = new System.Drawing.Point(6, 139);
             this.addButton.Name = "addButton";
             this.addButton.Size = new System.Drawing.Size(269, 23);
             this.addButton.TabIndex = 18;
@@ -125,11 +128,19 @@
             this.label1.TabIndex = 10;
             this.label1.Text = "Command:";
             // 
+            // UserInputPanel
+            // 
+            this.UserInputPanel.Location = new System.Drawing.Point(6, 85);
+            this.UserInputPanel.Name = "UserInputPanel";
+            this.UserInputPanel.Size = new System.Drawing.Size(269, 49);
+            this.UserInputPanel.TabIndex = 19;
+            // 
             // AddCommandForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(277, 110);
+            this.ClientSize = new System.Drawing.Size(277, 166);
+            this.Controls.Add(this.UserInputPanel);
             this.Controls.Add(this.addButton);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.Isregex);
@@ -158,5 +169,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label CommandName;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel UserInputPanel;
     }
 }

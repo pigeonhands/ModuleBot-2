@@ -45,20 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\RawChatLog.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\RawChatLog.Designer.cs">
-      <DependentUpon>RawChatLog.cs</DependentUpon>
-    </Compile>
     <Compile Include="SimpleCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Controls\RawChatLog.resx">
-      <DependentUpon>RawChatLog.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

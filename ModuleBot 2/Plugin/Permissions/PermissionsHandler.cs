@@ -12,8 +12,8 @@ namespace ModuleBot_2.Plugin.Permissions
     {
         #region " Permissions "
 
-        [Permission("Access to raw chat")]
-        public bool CanAccessRawChat { get; private set; }
+        [Permission("Can trigger operations from chat text")]
+        public bool CanUseChatTrigger { get; private set; }
 
         [Permission("Can use twitch commands")]
         public bool CanAccessCommands { get; private set; }
@@ -29,22 +29,18 @@ namespace ModuleBot_2.Plugin.Permissions
             Handlers = new HandlerBundle();
         }
 
-        public void AccessCommands()
+        public void UseCommands()
         {
             CanAccessCommands = true;
         }
-
-        public Event.IRawChatHandler AccessRawChat()
+        public Event.IChatTrigger UseChatTriggering()
         {
-            if (CanAccessRawChat)
-                return Handlers.RawChat;
-            CanAccessRawChat = true;
-            Handlers.RawChat = new RawChatHandler();
-            Handlers.RawChat.OnException = OnException;
-            return Handlers.RawChat;
+            if (CanUseChatTrigger)
+                return Handlers.ChatTrigger;
+            Handlers.ChatTrigger = new ChatTriggerHandler();
+            Handlers.ChatTrigger.OnException = OnException;
+            return Handlers.ChatTrigger;
         }
-
-        
     }
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class PermissionAttribute : Attribute
@@ -58,6 +54,6 @@ namespace ModuleBot_2.Plugin.Permissions
 
     public class HandlerBundle
     {
-        public RawChatHandler RawChat { get; set; }
+        public ChatTriggerHandler ChatTrigger { get; set; }
     }
 }

@@ -17,6 +17,7 @@ namespace ModuleBot_2.Commands
         public bool IsModOnly { get; set; }
         public CommandHandler Handler { get; set; }
         public OnExceptionDelegate OnException { get; set; }
+        public UserData UserDataInput { get; set; }
 
         public RegisteredCommand(string _flag, CommandHandler h)
         {
@@ -27,13 +28,13 @@ namespace ModuleBot_2.Commands
             FlagIsCaseSensitive = false;
             IsModOnly = false;
         }
-        public void Execute(string sender, string[] paramiters)
+        public void Execute(string sender, string[] Parameters)
         {
             if (!Handler.Parent.Enabled)
                 return;
             try
             {
-                Handler.Command.Execute(sender, paramiters);
+                Handler.Command.Execute(sender, Parameters, UserDataInput);
             }
             catch(Exception ex)
             {
