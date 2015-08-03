@@ -29,6 +29,15 @@ namespace ModuleBot_2
         IRCBot bot;
         public MainWindow()
         {
+            using (LoadBotForm lbf = new LoadBotForm())
+            {
+                if(lbf.ShowDialog() != DialogResult.OK)
+                {
+                    Environment.Exit(0);
+                    return;
+                }
+                bot = new IRCBot(lbf.BotLogin);
+            }
             InitializeComponent();
 
             DirectoryInfo PluginDirectory;
@@ -106,7 +115,6 @@ namespace ModuleBot_2
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            
             bot.OnDisconnect += Bot_OnDisconnect;
             bot.OnMessageRecieve += Bot_OnMessageRecieve;
             if(!bot.Start())

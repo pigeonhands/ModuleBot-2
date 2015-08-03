@@ -304,7 +304,8 @@
             this.ClientSize = new System.Drawing.Size(501, 308);
             this.Controls.Add(this.mainTabControl);
             this.Name = "MainWindow";
-            this.Text = "MainWindow";
+            this.ShowIcon = false;
+            this.Text = "ModuleBot 2";
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.mainTabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);

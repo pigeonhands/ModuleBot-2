@@ -69,6 +69,12 @@
     <Compile Include="Forms\AddModeratorForm.Designer.cs">
       <DependentUpon>AddModeratorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\LoadBotForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoadBotForm.Designer.cs">
+      <DependentUpon>LoadBotForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\PluginHandlerListForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +110,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AddModeratorForm.resx">
       <DependentUpon>AddModeratorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoadBotForm.resx">
+      <DependentUpon>LoadBotForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PluginHandlerListForm.resx">
       <DependentUpon>PluginHandlerListForm.cs</DependentUpon>

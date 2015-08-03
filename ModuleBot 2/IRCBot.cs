@@ -10,6 +10,9 @@ namespace ModuleBot_2
 {
     public delegate void OnDisconnectDelegate(IRCBot sender);
     public delegate void OnMessageRecieveDelegate(IRCBot sender, MBotMessage message);
+    /// <summary>
+    /// Made by BahNahNah
+    /// </summary>
     public class IRCBot
     {
         public TcpClient Client { get; private set; }
