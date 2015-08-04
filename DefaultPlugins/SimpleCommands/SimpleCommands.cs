@@ -18,7 +18,6 @@ namespace SimpleCommands
                 PluginInfomation info = new PluginInfomation("SimpleCommands");
                 info.Description = "Simple commands for ModuleBot";
                 info.Publisher = "BahNahNah";
-                PluginCommand p = new PluginCommand("f");
                 info.AddCommands(
                      PluginCommand.Create("Clear chat", "Clears the chat", ClearChatCommand_OnExecute, ParamiterType.None),
                      PluginCommand.Create("Ban", "Ban a user. Parameters: <username>", BanCommand_OnExecute, ParamiterType.Must),

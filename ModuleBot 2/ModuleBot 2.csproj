@@ -57,6 +57,12 @@
     <Compile Include="Controls\PluginDisplayControl.Designer.cs">
       <DependentUpon>PluginDisplayControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\UserInputControls\UserInput_Boolean.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserInputControls\UserInput_Boolean.Designer.cs">
+      <DependentUpon>UserInput_Boolean.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\UserInputControls\UserInput_Integer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -124,6 +130,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\PluginDisplayControl.resx">
       <DependentUpon>PluginDisplayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserInputControls\UserInput_Boolean.resx">
+      <DependentUpon>UserInput_Boolean.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserInputControls\UserInput_Integer.resx">
       <DependentUpon>UserInput_Integer.cs</DependentUpon>

@@ -11,26 +11,16 @@ using ModuleBot_2.Plugin;
 
 namespace ModuleBot_2.Controls.UserInputControls
 {
-    public partial class UserInput_UnasignedInteger : UserControl
+    public partial class UserInput_Boolean : UserControl
     {
         UserInputTagData Data;
-        public UserInput_UnasignedInteger(UserInputTagData _Data)
+        public UserInput_Boolean(UserInputTagData _Data)
         {
             InitializeComponent();
             Data = _Data;
             numericUpDown1.Value = (int)Data.Value;
             groupBox1.Text = Data.InputID;
             this.Tag = Data;
-        }
-
-        private void UserInput_UnasignedInteger_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            Data.Value = (uint)numericUpDown1.Value;
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)

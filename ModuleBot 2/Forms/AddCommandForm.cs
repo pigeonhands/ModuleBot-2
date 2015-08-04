@@ -26,7 +26,8 @@ namespace ModuleBot_2.Forms
         Dictionary<Type, Type> TypeForm = new Dictionary<Type, Type>()
         {
             {typeof(string),  typeof(UserInput_String)},
-            {typeof(int), typeof(UserInput_Integer) }
+            {typeof(int), typeof(UserInput_Integer) },
+            {typeof(uint), typeof(UserInput_UnasignedInteger) }
         };
         public AddCommandForm(CommandHandler[] _handlers)
         {
