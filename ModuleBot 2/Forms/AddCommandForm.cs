@@ -27,7 +27,8 @@ namespace ModuleBot_2.Forms
         {
             {typeof(string),  typeof(UserInput_String)},
             {typeof(int), typeof(UserInput_Integer) },
-            {typeof(uint), typeof(UserInput_UnasignedInteger) }
+            {typeof(uint), typeof(UserInput_UnasignedInteger) },
+            {typeof(bool), typeof(UserInput_Boolean) }
         };
         public AddCommandForm(CommandHandler[] _handlers)
         {

@@ -14,11 +14,13 @@ namespace ModuleBot_2.Controls.UserInputControls
     public partial class UserInput_Boolean : UserControl
     {
         UserInputTagData Data;
+        bool set = false;
         public UserInput_Boolean(UserInputTagData _Data)
         {
             InitializeComponent();
             Data = _Data;
-            numericUpDown1.Value = (int)Data.Value;
+            set = (bool)Data.Value;
+            button1.Text = set ? "On" : "Off";
             groupBox1.Text = Data.InputID;
             this.Tag = Data;
         }
@@ -26,6 +28,13 @@ namespace ModuleBot_2.Controls.UserInputControls
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            set = !set;
+            Data.Value = set;
+            button1.Text = set ? "On" : "Off";
         }
     }
 }
