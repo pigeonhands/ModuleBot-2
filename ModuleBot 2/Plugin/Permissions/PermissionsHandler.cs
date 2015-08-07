@@ -13,10 +13,10 @@ namespace ModuleBot_2.Plugin.Permissions
         #region " Permissions "
 
         [Permission("Can trigger operations from chat text")]
-        public bool CanUseChatTrigger { get; private set; }
+        public bool CanUseChatTrigger { get; private set; } = false;
 
         [Permission("Can use twitch commands")]
-        public bool CanAccessCommands { get; private set; }
+        public bool CanAccessCommands { get; private set; } = false;
 
         #endregion
         public LoadedPlugin Parent { get; private set; }
@@ -37,6 +37,7 @@ namespace ModuleBot_2.Plugin.Permissions
         {
             if (CanUseChatTrigger)
                 return Handlers.ChatTrigger;
+            CanUseChatTrigger = true;
             Handlers.ChatTrigger = new ChatTriggerHandler();
             Handlers.ChatTrigger.OnException = OnException;
             return Handlers.ChatTrigger;

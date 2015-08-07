@@ -52,7 +52,9 @@ namespace ModuleBot_2.Forms
 
         void LoadUserInput(UserData data = null)
         {
-            UserInput[] UserData = SelectedHandler.Command.UserData;
+            UserInput[] UserData = null;
+            if (SelectedHandler != null)
+                UserData = SelectedHandler.Command.UserData;
             userInputHeight = 0;
             this.Height = DefaultHeight;
             UserInputPanel.Controls.Clear();

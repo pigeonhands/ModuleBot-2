@@ -153,12 +153,15 @@ namespace ModuleBot_2
 
                         xml.WriteStartElement("UserData");
 
-                        foreach(var ud in command.UserDataInput.ObjectData)
+                        if (command.UserDataInput != null)
                         {
-                            xml.WriteStartElement("object");
-                            xml.WriteAttributeString("Name", ud.Key);
-                            xml.WriteAttributeString("Value", SerilizeObject(ud.Value));
-                            xml.WriteEndElement();//data
+                            foreach (var ud in command.UserDataInput.ObjectData)
+                            {
+                                xml.WriteStartElement("object");
+                                xml.WriteAttributeString("Name", ud.Key);
+                                xml.WriteAttributeString("Value", SerilizeObject(ud.Value));
+                                xml.WriteEndElement();//data
+                            }
                         }
 
                         xml.WriteEndElement();//UserData
