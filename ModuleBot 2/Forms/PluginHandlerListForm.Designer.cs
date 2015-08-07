@@ -71,7 +71,7 @@
             // 
             // columnHeader3
             // 
-            this.columnHeader3.Text = "Paramiter";
+            this.columnHeader3.Text = "Parameter";
             this.columnHeader3.Width = 88;
             // 
             // columnHeader4
