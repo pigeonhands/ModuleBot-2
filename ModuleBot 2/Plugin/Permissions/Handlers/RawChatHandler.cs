@@ -16,8 +16,12 @@ namespace ModuleBot_2.Plugin.Permissions.Handlers
         {
             try
             {
-                if (TriggerList.ContainsKey(message.ToLower()))
-                    TriggerList[message.ToLower()](sender);
+                foreach(var trigger in TriggerList)
+                {
+                    if (message.ToLower().Contains(trigger.Key))
+                        trigger.Value(sender);
+                }
+                
             }
             catch(Exception ex)
             {

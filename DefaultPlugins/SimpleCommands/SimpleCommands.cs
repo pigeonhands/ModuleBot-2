@@ -65,13 +65,6 @@ namespace SimpleCommands
         {
             Bot = BotHandler;
             PermissionsHandler.UseCommands();
-            var trigger = PermissionsHandler.UseChatTriggering();
-            trigger.AddTrigger("test", TestChatTrigger);
-        }
-
-        void TestChatTrigger(string sender)
-        {
-            Bot.SayMessage("{0} triggered!", sender);
         }
     }
 }
